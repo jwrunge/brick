@@ -1,0 +1,21 @@
+{
+	"name": "brick",
+	"version": "1.0.0",
+	"description": "",
+	"license": "ISC",
+	"author": "",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"lint": "biome check .",
+		"format": "biome format --write .",
+		"check": "biome check --write ."
+	},
+	"dependencies": {
+		"@types/node": "^25.5.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.4.9"
+	}
+}
