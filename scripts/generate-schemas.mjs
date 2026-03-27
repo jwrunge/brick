@@ -1,5 +1,5 @@
 import { execFile } from "node:child_process";
-import { mkdir, readdir, rm } from "node:fs/promises";
+import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { promisify } from "node:util";
@@ -68,6 +68,30 @@ const generateSchema = async (sourcePath) => {
 		"--out",
 		outPath,
 	]);
+
+	const raw = await readFile(outPath, "utf8");
+	/** @type {Record<string, unknown>} */
+	const schema = JSON.parse(raw);
+	const definitions =
+		schema && typeof schema === "object" && "definitions" in schema
+			? schema.definitions
+			: undefined;
+
+	if (definitions && typeof definitions === "object") {
+		for (const def of Object.values(definitions)) {
+			if (!def || typeof def !== "object") continue;
+			const objectDef =
+				/** @type {{ properties?: Record<string, unknown>; type?: unknown }} */ (
+					def
+				);
+			if (objectDef.type !== "object") continue;
+			objectDef.properties = objectDef.properties ?? {};
+			if (!("$schema" in objectDef.properties)) {
+				objectDef.properties.$schema = { type: "string" };
+			}
+		}
+		await writeFile(outPath, `${JSON.stringify(schema, null, 2)}\n`, "utf8");
+	}
 
 	return outPath;
 };
