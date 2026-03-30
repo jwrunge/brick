@@ -1,5 +1,9 @@
-import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
+import generateWeb from "./generators/web.ts";
+
+import type { AppSchema } from "./schemas/app.ts";
+
 export type OutputType =
 	| "web"
 	| "ios"
@@ -11,30 +15,22 @@ export type OutputType =
 export const generate = async (output: OutputType, dir: string) => {
 	const relativeDir = path.resolve(dir);
 	const appFilePromise = readFile(path.resolve(relativeDir, "app.json"));
+	let appSchema: AppSchema;
 
 	try {
-		const [_appFile] = await Promise.all([appFilePromise]);
+		const [appFile] = await Promise.all([appFilePromise]);
+		appSchema = JSON.parse(appFile.toString()) as AppSchema;
 	} catch (err) {
 		console.error(`Error reading app.json in ${dir}:`, err);
 		process.exit(1);
 	}
 
-	const dist = path.resolve(relativeDir, "dist");
-	const distOutput = path.resolve(dist, output);
-
-	for (const dir of [dist, distOutput]) {
-		try {
-			await stat(dir);
-		} catch {
-			await mkdir(dir, { recursive: true });
-		}
-	}
-
-	if (output === "web") {
-		console.log(`Generating web project in ${dir}`);
-		writeFile(
-			path.resolve(distOutput, "index.html"),
-			"<!DOCTYPE html><html><head><title>Brick App</title></head><body><h1>Hello, Brick!</h1></body></html>",
-		);
+	switch (output) {
+		case "web":
+			generateWeb(relativeDir, appSchema);
+			break;
+		default:
+			console.error(`Output type ${output} not supported.`);
+			process.exit(1);
 	}
 };

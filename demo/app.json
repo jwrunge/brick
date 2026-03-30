@@ -1,6 +1,5 @@
 {
 	"$schema": "../schemas/app.schema.json",
-	"name": "",
-	"version": "1.0.0",
-	"endpoints": []
+	"name": "My app",
+	"version": "1.0.0"
 }
