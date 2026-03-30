@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import parse from "./contracts/parse.ts";
-import { generate, type OutputType } from "./generate.ts";
+import { generate, type OutputType } from "./generators/generate.ts";
 
 type CliMode = "generate" | "parse";
 

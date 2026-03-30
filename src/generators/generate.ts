@@ -1,8 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import generateWeb from "./generators/web.ts";
-
-import type { AppSchema } from "./schemas/app.ts";
+import type { AppSchema } from "../schemas/app.ts";
+import generateWeb from "./web.ts";
 
 export type OutputType =
 	| "web"

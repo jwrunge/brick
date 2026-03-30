@@ -6,3 +6,13 @@ syn twoWay = 30.2               // A variable optionally initialized by the pare
 syn twoWayInitialized: float    // A variable that MUST BE initialized by the parent, updatable by the component (syncs back)
 
 const MY_CONSTANT = 42          // A constant used within the component
+
+[Markup]
+
+# This is my content
+
+Here are some variables for you: {initialized}, {maybeInitialized}.
+
+Here is a couple more: {twoWay}, {twoWayInitialized}.
+
+A const: {MY_CONSTANT}

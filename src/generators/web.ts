@@ -1,4 +1,4 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { AppSchema } from "../schemas/app.ts";
 import { ensurePaths } from "./generatorUtil.ts";
@@ -20,18 +20,8 @@ export default async (relativeDir: string, appSchema: AppSchema) => {
 	console.info(`Generating web project ${relativeDir}`);
 
 	const { distOutput } = await ensurePaths(relativeDir, "web");
-	const indexHtmlPath = path.resolve(relativeDir, "index.html");
 
-	let indexHtml: string | null = null;
-	try {
-		indexHtml = await readFile(indexHtmlPath, "utf-8");
-	} catch {
-		console.warn(
-			`No index.html found at ${indexHtmlPath}, generating default index.html`,
-		);
-	}
-
-	const htmlContent = (indexHtml || defaultHtml)
+	const htmlContent = defaultHtml
 		.replace(/{%APP.name%}/g, appSchema.name)
 		.replace(
 			/{%CONTENT%}/g,
