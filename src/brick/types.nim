@@ -1,6 +1,5 @@
 import std/[json, strutils]
 
-
 type
   Variable* = object
     typeName*: string
@@ -9,11 +8,9 @@ type
     sync*: bool
     optional*: bool
 
-
 const
   scalarTypes* = ["boolean", "int", "float", "string", "object"]
   fixedTypes* = ["null", "Content"]
-
 
 proc knownTypes*(): seq[string] =
   result = @[]
@@ -23,14 +20,12 @@ proc knownTypes*(): seq[string] =
   for t in fixedTypes:
     result.add(t)
 
-
 proc isKnownType*(candidate: string): bool =
   let trimmed = candidate.strip()
   for t in knownTypes():
     if t == trimmed:
       return true
   return false
-
 
 proc variableToJson*(value: Variable): JsonNode =
   %*{

@@ -1,14 +1,12 @@
 import std/[json, os]
 import brick/[contracts, generate]
 
-
 proc usageError() {.noreturn.} =
   stderr.writeLine("Usage: brick <mode> [options]")
   stderr.writeLine("Modes:")
   stderr.writeLine("  parse <file>")
   stderr.writeLine("  generate <output> <dir>")
   quit(1)
-
 
 when isMainModule:
   var args = commandLineParams()

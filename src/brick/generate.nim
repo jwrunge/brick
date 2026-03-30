@@ -1,6 +1,5 @@
 import std/[json, os, strutils]
 
-
 const defaultHtml = """<!doctype html>
 <html lang="en">
   <head>
@@ -15,7 +14,6 @@ const defaultHtml = """<!doctype html>
 </html>
 """
 
-
 proc ensurePaths(relativeDir: string, output: string): string =
   let dist = relativeDir / "dist"
   let distOutput = dist / output
@@ -24,7 +22,6 @@ proc ensurePaths(relativeDir: string, output: string): string =
   createDir(distOutput)
 
   return distOutput
-
 
 proc generateWeb(relativeDir: string, appSchema: JsonNode) =
   stdout.writeLine("Generating web project " & relativeDir)
@@ -42,7 +39,6 @@ proc generateWeb(relativeDir: string, appSchema: JsonNode) =
     )
 
   writeFile(distOutput / "index.html", htmlContent)
-
 
 proc generate*(output: string, dir: string) =
   let relativeDir = absolutePath(dir)

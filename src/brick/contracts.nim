@@ -1,16 +1,13 @@
 import std/[algorithm, json, math, sequtils, strutils, tables]
 import ./types
 
-
 proc fail(message: string) {.noreturn.} =
   raise newException(ValueError, message)
-
 
 proc countChar(input: string, needle: char): int =
   for ch in input:
     if ch == needle:
       inc result
-
 
 proc isValidVariableName(name: string): bool =
   if name.len == 0:
@@ -26,7 +23,6 @@ proc isValidVariableName(name: string): bool =
 
   return true
 
-
 proc isValidConstName(name: string): bool =
   if name.len == 0:
     return false
@@ -34,7 +30,6 @@ proc isValidConstName(name: string): bool =
     if not (ch in {'A' .. 'Z'} or ch == '_'):
       return false
   return true
-
 
 proc removeComments(input: string): string =
   var i = 0
@@ -70,7 +65,6 @@ proc removeComments(input: string): string =
     result.add(input[i])
     inc i
 
-
 proc extractContractSection(markup: string): string =
   let marker = "[Contract]"
   let startMarker = markup.find(marker)
@@ -88,7 +82,6 @@ proc extractContractSection(markup: string): string =
 
   result = removeComments(result).strip()
 
-
 proc removeTrailingArrayBrackets(input: string): string =
   let trimmed = input.strip()
   if trimmed.len < 2 or trimmed[^1] != ']':
@@ -102,7 +95,6 @@ proc removeTrailingArrayBrackets(input: string): string =
     return trimmed[0 ..< idx].strip()
 
   return input
-
 
 proc validateStructuredType(value: JsonNode, path: string) =
   case value.kind
@@ -125,7 +117,6 @@ proc validateStructuredType(value: JsonNode, path: string) =
         "' must be a string, object, or single-schema array"
     )
 
-
 proc validateTypeAnnotation(typeText: string): string =
   let trimmed = typeText.strip()
 
@@ -144,7 +135,6 @@ proc validateTypeAnnotation(typeText: string): string =
     return trimmed
 
   fail("Invalid type annotation: " & trimmed)
-
 
 proc determineTypeFromValue(value: string): tuple[varType: string, parsed: JsonNode] =
   let trimmed = value.strip()
@@ -167,7 +157,6 @@ proc determineTypeFromValue(value: string): tuple[varType: string, parsed: JsonN
     discard
 
   return ("string", %value)
-
 
 proc splitTypeAndDefault(remainder: string): tuple[typeChunk: string, defaultChunk: string] =
   let trimmed = remainder.strip()
@@ -213,7 +202,6 @@ proc splitTypeAndDefault(remainder: string): tuple[typeChunk: string, defaultChu
 
   fail("Unexpected token sequence in declaration: " & trimmed)
 
-
 proc collectContractDeclarations(contractString: string): seq[string] =
   var current = ""
   var braceDepth = 0
@@ -247,7 +235,6 @@ proc variablesToJson*(variables: Table[string, Variable]): JsonNode =
 
   for key in keys:
     result[key] = variableToJson(variables[key])
-
 
 proc parseContract*(markup: string): Table[string, Variable] =
   let contractString = extractContractSection(markup)
