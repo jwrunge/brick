@@ -7,13 +7,18 @@ bin           = @["brick"]
 
 requires "nim >= 2.0.0"
 
-task b, "Build the brick binary to dist/brick":
+proc buildBrick() =
   exec "mkdir -p dist"
   exec "nim c -o:dist/brick src/main.nim"
 
+task b, "Build the brick binary to dist/brick":
+  buildBrick()
+
 task parse, "Run the parse function in the Nim binary":
-  exec "nim c -r src/main.nim -- parse ./demo/components/Layout.ctr"
-  exec "nim c -r src/main.nim -- parse ./demo/components/Main.ctr"
+  buildBrick()
+  exec "./dist/brick parse ./demo/components/Layout.ctr"
+  exec "./dist/brick parse ./demo/components/Main.ctr"
 
 task web, "Run the generate web function in the Nim binary":
-  exec "nim c -r src/main.nim -- generate web ./demo"
+  buildBrick()
+  exec "./dist/brick generate web ./demo"

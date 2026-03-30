@@ -1,44 +1,44 @@
 import std/[json, os]
-import brick/[contracts, generate]
+import ./contracts
+import ./generate
 
-proc usageError() {.noreturn.} =
-  stderr.writeLine("Usage: brick <mode> [options]")
-  stderr.writeLine("Modes:")
-  stderr.writeLine("  parse <file>")
-  stderr.writeLine("  generate <output> <dir>")
-  quit(1)
+proc printUsage() =
+  stdout.writeLine("Usage:")
+  stdout.writeLine("  brick parse <file>")
+  stdout.writeLine("  brick generate <output> <dir>")
+
+proc runParse(filePath: string) =
+  if not fileExists(filePath):
+    raise newException(IOError, "File not found: " & filePath)
+
+  let markup = readFile(filePath)
+  let parsed = parseContract(markup)
+  stdout.writeLine(pretty(variablesToJson(parsed), 2))
+
+proc runGenerate(output: string, targetDir: string) =
+  generate(output, targetDir)
+
+proc main() =
+  let args = commandLineParams()
+  if args.len == 0:
+    printUsage()
+    quit(1)
+
+  case args[0]
+  of "parse":
+    if args.len != 2:
+      raise newException(ValueError, "parse expects 1 argument: <file>")
+    runParse(args[1])
+  of "generate":
+    if args.len != 3:
+      raise newException(ValueError, "generate expects 2 arguments: <output> <dir>")
+    runGenerate(args[1], args[2])
+  else:
+    raise newException(ValueError, "Unknown command: " & args[0])
 
 when isMainModule:
-  var args = commandLineParams()
-  if args.len > 0 and args[0] == "--":
-    args = args[1 .. ^1]
-
-  if args.len < 1:
-    usageError()
-
-  let mode = args[0]
-
   try:
-    case mode
-    of "parse":
-      if args.len < 2:
-        usageError()
-
-      let filePath = args[1]
-      let contents = readFile(filePath)
-      let variables = parseContract(contents)
-      stdout.writeLine("Variable lines: " & pretty(variablesToJson(variables), 2))
-
-    of "generate":
-      if args.len < 3:
-        usageError()
-
-      let output = args[1]
-      let dir = args[2]
-      generate(output, dir)
-
-    else:
-      usageError()
+    main()
   except CatchableError as err:
-    stderr.writeLine(err.msg)
+    stderr.writeLine("Error: " & err.msg)
     quit(1)
