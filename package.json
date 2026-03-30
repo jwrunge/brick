@@ -11,7 +11,9 @@
 		"lint": "biome check .",
 		"format": "biome format --write .",
 		"check": "biome check --write .",
-		"generate:schemas": "node scripts/generate-schemas.mjs"
+		"generate:schemas": "node scripts/generate-schemas.mjs",
+		"nim:parse": "nim c -r nim/src/brick.nim -- parse",
+		"nim:generate:web": "nim c -r nim/src/brick.nim -- generate web"
 	},
 	"dependencies": {
 		"@types/node": "^25.5.0"
