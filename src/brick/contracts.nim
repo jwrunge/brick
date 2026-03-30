@@ -266,9 +266,10 @@ proc parseContract*(markup: string): Table[string, Variable] =
     if initializer notin ["let", "syn", "const"]:
       fail("Invalid variable declaration: " & line)
 
-    let nameToken = parts[1]
-    let name = nameToken.strip(chars = {'?'})
-    let isOptional = nameToken.endsWith("?")
+    let nameTokenRaw = parts[1]
+    let hasInlineColon = nameTokenRaw.endsWith(":")
+    let name = nameTokenRaw.strip(chars = {'?', ':'})
+    let isOptional = nameTokenRaw.contains("?")
 
     if not isValidVariableName(name):
       fail("Invalid variable name '" & name & "' in line: " & line)
@@ -276,8 +277,10 @@ proc parseContract*(markup: string): Table[string, Variable] =
     if initializer == "const" and not isValidConstName(name):
       fail("Constant variable name must be uppercase: " & name)
 
-    let remainderStart = line.find(nameToken) + nameToken.len
-    let remainder = if remainderStart < line.len: line[remainderStart .. ^1] else: ""
+    let remainderStart = line.find(nameTokenRaw) + nameTokenRaw.len
+    var remainder = if remainderStart < line.len: line[remainderStart .. ^1] else: ""
+    if hasInlineColon:
+      remainder = ":" & remainder.strip()
     let (declaredChunk, defaultChunk) = splitTypeAndDefault(remainder)
 
     var declaredType = ""
