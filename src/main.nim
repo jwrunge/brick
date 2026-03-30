@@ -6,6 +6,7 @@ proc printUsage() =
   stdout.writeLine("Usage:")
   stdout.writeLine("  brick parse <file>")
   stdout.writeLine("  brick generate <output> <dir>")
+  quit(0)
 
 proc runParse(filePath: string) =
   if not fileExists(filePath):
@@ -22,7 +23,6 @@ proc main() =
   let args = commandLineParams()
   if args.len == 0:
     printUsage()
-    quit(1)
 
   case args[0]
   of "parse":

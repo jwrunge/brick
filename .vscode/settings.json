@@ -1,9 +1,16 @@
 {
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"editor.tabSize": 4,
 	"editor.defaultFormatter": "biomejs.biome",
 	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
 		"source.fixAll.biome": true,
 		"source.organizeImports.biome": true
+	},
+	"[nim]": {
+		"editor.insertSpaces": false,
+		"editor.tabSize": 4
 	},
 	"[javascript]": {
 		"editor.defaultFormatter": "biomejs.biome"
