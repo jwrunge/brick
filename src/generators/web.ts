@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { AppSchema } from "../schemas/app.ts";
-import { ensurePaths } from "./util.ts";
+import { ensurePaths } from "./generatorUtil.ts";
 
 const defaultHtml = `<!doctype html>
 <html lang="en">

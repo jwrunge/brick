@@ -1,0 +1,8 @@
+[Contract]
+let initialized: string         // A variable that MUST BE initialized by the parent; released into the component's control
+let maybeInitialized = "Naw"    // A variable that MAY BE inititialized by the parent, but has a fallback in the component
+
+syn twoWay = 30.2               // A variable optionally initialized by the parent, updatable by the component (syncs back)
+syn twoWayInitialized: float    // A variable that MUST BE initialized by the parent, updatable by the component (syncs back)
+
+const MY_CONSTANT = 42          // A constant used within the component
