@@ -1,5 +1,6 @@
 {
 	"$schema": "../schemas/app.schema.json",
 	"name": "My app",
-	"version": "1.0.0"
+	"version": "1.0.0",
+	"root": "Main.ctr"
 }

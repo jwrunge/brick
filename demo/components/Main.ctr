@@ -1,0 +1,23 @@
+[Contract]
+
+let twoWay = 42
+
+const MY_JSON_CONST = {
+    nested: {
+        goodValue: float,
+        whatever: string
+    }[],
+    shallow: boolean
+}
+
+[Markup]
+
+@Layout.ctr (
+    initialized: "Let's go!",
+    twoWay,
+    twoWayInitialized: 14,
+    slot1:
+        ## Here is some content for Slot 1
+
+        I like content in Slot 1
+):

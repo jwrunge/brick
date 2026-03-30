@@ -7,9 +7,17 @@ syn twoWayInitialized: float    // A variable that MUST BE initialized by the pa
 
 const MY_CONSTANT = 42          // A constant used within the component
 
+let slot1?: Content             // Declare an optional slot
+
 [Markup]
 
 # This is my content
+
+@if slot1:
+    Inserted: @slot1
+@else:
+    No slot1 provided
+@/if
 
 Here are some variables for you: {initialized}, {maybeInitialized}.
 

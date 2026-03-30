@@ -3,7 +3,16 @@ export type Variable = {
 	default: string | number | boolean | null;
 	const: boolean;
 	sync: boolean;
+	optional: boolean;
 };
 
-export const types = ["boolean", "int", "float", "null", "string"] as const;
-export type Types = (typeof types)[number];
+const scalarTypes = ["boolean", "int", "float", "string", "object"] as const;
+
+export type ScalarType = (typeof scalarTypes)[number];
+export type Types = ScalarType | `${ScalarType}[]` | "null" | "Content";
+
+export const types: readonly Types[] = [
+	...scalarTypes.flatMap((type) => [type, `${type}[]` as const]),
+	"null",
+	"Content",
+];

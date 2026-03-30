@@ -3,4 +3,5 @@ export interface AppSchema {
 	name: string;
 	version: `${number}.${number}.${number}`;
 	build: number;
+	root: string;
 }
