@@ -23,7 +23,7 @@ proc main() =
   let args = commandLineParams()
   if args.len == 0:
     printUsage()
-
+    
   case args[0]
   of "parse":
     if args.len != 2:
